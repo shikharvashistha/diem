@@ -283,7 +283,7 @@ impl EventSubscriptionService {
                 .read()
                 .reader
                 .deref()
-                .batch_fetch_resources_by_version(vec![config_id.access_path()], version)
+                .fetch_resource_at_version(vec![config_id.access_path()], version)
             {
                 match &config_list[..] {
                     [config] => {

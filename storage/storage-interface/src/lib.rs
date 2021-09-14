@@ -390,11 +390,11 @@ pub trait DbReader: Send + Sync {
 }
 
 impl MoveStorage for &dyn DbReader {
-    fn batch_fetch_resources(&self, access_paths: Vec<AccessPath>) -> Result<Vec<Vec<u8>>> {
-        self.batch_fetch_resources_by_version(access_paths, self.fetch_synced_version()?)
+    fn fetch_resources(&self, access_paths: Vec<AccessPath>) -> Result<Vec<Vec<u8>>> {
+        self.fetch_resource_at_version(access_paths, self.fetch_synced_version()?)
     }
 
-    fn batch_fetch_resources_by_version(
+    fn fetch_resource_at_version(
         &self,
         access_paths: Vec<AccessPath>,
         version: Version,

@@ -141,7 +141,7 @@ impl ExecutorProxy {
         let mut config_id_to_config = HashMap::new();
         for config_id in config_registry.iter() {
             // TODO(joshlind): refactor the move storage so we aren't batch fetching individual configs...
-            if let Ok(config_list) = storage.batch_fetch_resources(vec![config_id.access_path()]) {
+            if let Ok(config_list) = storage.fetch_resources(vec![config_id.access_path()]) {
                 match &config_list[..] {
                     [config] => {
                         if let Some(old_entry) =
