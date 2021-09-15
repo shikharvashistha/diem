@@ -7,17 +7,17 @@ use anyhow::Result;
 // TODO combine with ConfigStorage
 pub trait MoveStorage {
     /// Returns a vector of Move resources as serialized byte array
-    /// Order of resources returned matches the order of `access_path`
-    fn fetch_resources(&self, access_paths: Vec<AccessPath>) -> Result<Vec<Vec<u8>>>;
+    /// Order of resource returned matches the order of `access_path`
+    fn fetch_resource(&self, access_path: AccessPath) -> Result<Vec<u8>>;
 
     /// Returns a vector of Move resources as serialized byte array from a
     /// specified version of the database
     /// Order of resources returned matches the order of `access_path`
     fn fetch_resource_at_version(
         &self,
-        access_paths: Vec<AccessPath>,
+        access_path: AccessPath,
         version: Version,
-    ) -> Result<Vec<Vec<u8>>>;
+    ) -> Result<Vec<u8>>;
 
     /// Get the version on the latest transaction info.
     fn fetch_synced_version(&self) -> Result<Version>;

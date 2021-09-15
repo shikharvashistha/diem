@@ -390,16 +390,16 @@ pub trait DbReader: Send + Sync {
 }
 
 impl MoveStorage for &dyn DbReader {
-    fn fetch_resources(&self, access_paths: Vec<AccessPath>) -> Result<Vec<Vec<u8>>> {
-        self.fetch_resource_at_version(access_paths, self.fetch_synced_version()?)
+    fn fetch_resource(&self, access_path: AccessPath) -> Result<Vec<u8>> {
+        self.fetch_resource_at_version(access_path, self.fetch_synced_version()?)
     }
 
     fn fetch_resource_at_version(
         &self,
-        access_paths: Vec<AccessPath>,
+        access_path: AccessPath,
         version: Version,
-    ) -> Result<Vec<Vec<u8>>> {
-        let addresses: Vec<AccountAddress> = access_paths
+    ) -> Result<Vec<u8>> {
+        let addresses: Vec<AccountAddress> = access_path
             .iter()
             .collect::<HashSet<_>>()
             .iter()
@@ -423,7 +423,7 @@ impl MoveStorage for &dyn DbReader {
             })
             .collect::<Result<HashMap<_, AccountState>>>()?;
 
-        access_paths
+        access_path
             .iter()
             .map(|path| {
                 Ok(account_states
