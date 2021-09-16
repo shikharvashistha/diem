@@ -399,9 +399,8 @@ impl MoveStorage for &dyn DbReader {
         access_path: AccessPath,
         version: Version,
     ) -> Result<Vec<u8>> {
-        let addresses: Vec<AccountAddress> = access_path
-            .iter()
-            .collect::<HashSet<_>>()
+        let addresses: AccountAddress = access_path
+            .collect::<Vec<_>>()
             .iter()
             .map(|path| path.address)
             .collect();
@@ -409,7 +408,7 @@ impl MoveStorage for &dyn DbReader {
         let results = addresses
             .iter()
             .map(|addr| self.get_account_state_with_proof_by_version(*addr, version))
-            .collect::<Result<Vec<_>>>()?;
+            .collect::<Result<_>>()?;
 
         // Account address --> AccountState
         let account_states = addresses
@@ -424,7 +423,6 @@ impl MoveStorage for &dyn DbReader {
             .collect::<Result<HashMap<_, AccountState>>>()?;
 
         access_path
-            .iter()
             .map(|path| {
                 Ok(account_states
                     .get(&path.address)
